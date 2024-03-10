@@ -1,48 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:k1_cardapio/model/new_page.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
-  _HomeState createState() => _HomeState();
+  State<Home> createState() => _Home();
 }
 
-class _HomeState extends State<Home> {
-  int _indiceAtual = 0;
-  final List<Widget> _telas = [
-    NewPage('Inicio'),
-    NewPage('Cardápio'),
-    NewPage('Atualizar'),
-  ];
-
+class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: _telas[_indiceAtual],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _indiceAtual,
-        onTap: onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Bem Vindo(a) ao Cardápio do Grupo K1!',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Image.asset('images/K1_logo_colorido.png',
+                  width: 400, height: 400, fit: BoxFit.contain)
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_menu),
-            label: 'Cardápio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.file_upload),
-            label: 'Atualizar',
-          ),
-        ],
+        ),
       ),
     );
-  }
-
-  void onItemTapped(int index) {
-    setState(() {
-      _indiceAtual = index;
-    });
   }
 }
