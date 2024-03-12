@@ -24,10 +24,12 @@ class _NavigationState extends State<Navigation> {
         title: Center(
           child: Text(
             _titulos[_indiceAtual],
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+            ),
           ),
         ),
-        backgroundColor: Colors.grey,
       ),
       body: Center(
         child: _telas.elementAt(_indiceAtual),
@@ -35,7 +37,7 @@ class _NavigationState extends State<Navigation> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
         onTap: onItemTapped,
-        backgroundColor: Colors.grey,
+        backgroundColor: const Color.fromARGB(255, 200, 0, 0),
         selectedItemColor: Colors.white,
         items: const [
           BottomNavigationBarItem(
