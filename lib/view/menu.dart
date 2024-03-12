@@ -19,37 +19,60 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.grey[200],
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(
-                height: 1,
-              ),
-              Image.asset(
-                'images/2.png',
-                width: 800,
-                height: 800,
-                fit: BoxFit.contain,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _listMenuController.toggleListVisibility();
-                  });
-                },
-                child: Text(_listMenuController.isListOpen
-                    ? 'Fechar Lista dos Cardápios Anteriores'
-                    : 'Abrir Lista dos Cardápios Anteriores'),
-              ),
-              if (_listMenuController.isListOpen)
-                _listMenuController.buildListView(),
-            ],
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+            color: Colors.white,
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(
+                  height: 1,
+                ),
+                Image.asset(
+                  'images/2.png',
+                  width: 600,
+                  height: 600,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 200, 0, 0),
+                    padding: const EdgeInsets.all(25.0),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12.0),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _listMenuController.toggleListVisibility();
+                    });
+                  },
+                  child: Text(
+                    _listMenuController.isListOpen
+                        ? 'Fechar Lista dos Cardápios Anteriores'
+                        : 'Abrir Lista dos Cardápios Anteriores',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                if (_listMenuController.isListOpen)
+                  _listMenuController.buildListView(),
+              ],
+            ),
           ),
         ),
       ),

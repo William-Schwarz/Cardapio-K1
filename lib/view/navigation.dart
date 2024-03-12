@@ -21,11 +21,12 @@ class _NavigationState extends State<Navigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 200, 0, 0),
         title: Center(
           child: Text(
             _titulos[_indiceAtual],
             style: const TextStyle(
-              color: Colors.black,
+              color: Colors.white,
               fontSize: 20,
             ),
           ),
