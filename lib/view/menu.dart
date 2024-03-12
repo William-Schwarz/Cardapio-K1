@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:k1_cardapio/controller/list_menus.dart';
+import 'package:k1_cardapio/view/list_menus.dart';
 
 class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
@@ -34,8 +34,8 @@ class _MenuState extends State<Menu> {
                 ),
                 Image.asset(
                   'images/2.png',
-                  width: 600,
-                  height: 600,
+                  width: 800,
+                  height: 800,
                   fit: BoxFit.contain,
                 ),
                 const SizedBox(
@@ -43,7 +43,8 @@ class _MenuState extends State<Menu> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 200, 0, 0),
+                    elevation: 5,
+                    backgroundColor: const Color.fromARGB(255, 156, 16, 6),
                     padding: const EdgeInsets.all(25.0),
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(

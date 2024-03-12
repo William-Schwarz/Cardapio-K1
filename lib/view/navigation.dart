@@ -10,18 +10,17 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   int _indiceAtual = 0;
-  final List<String> _titulos = ['Inicio', 'Cardápio', 'Avaliar'];
+  final List<String> _titulos = ['Cardápio', 'Avaliações'];
   final List<Widget> _telas = [
     const NewPage(0),
     const NewPage(1),
-    const NewPage(2),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 200, 0, 0),
+        backgroundColor: const Color.fromARGB(255, 156, 16, 6),
         title: Center(
           child: Text(
             _titulos[_indiceAtual],
@@ -38,20 +37,16 @@ class _NavigationState extends State<Navigation> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
         onTap: onItemTapped,
-        backgroundColor: const Color.fromARGB(255, 200, 0, 0),
+        backgroundColor: const Color.fromARGB(255, 156, 16, 6),
         selectedItemColor: Colors.white,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.restaurant_menu),
             label: 'Cardápio',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Avaliar',
+            icon: Icon(Icons.assessment),
+            label: 'Avaliações',
           ),
         ],
       ),

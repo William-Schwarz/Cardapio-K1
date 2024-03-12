@@ -12,7 +12,7 @@ class _Home extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color.fromARGB(255, 200, 0, 0),
+        color: const Color.fromARGB(255, 156, 16, 6),
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

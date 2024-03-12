@@ -14,10 +14,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'K1 Cardápio',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        colorSchemeSeed: const Color.fromARGB(255, 156, 16, 6),
+        fontFamily: 'DINPro',
       ),
       home: const Navigation(),
     );
   }
 }
+
