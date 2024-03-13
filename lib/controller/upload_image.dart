@@ -1,33 +1,40 @@
-import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 class UploadImageController extends StatelessWidget {
-  UploadImageController({super.key});
+  UploadImageController({Key? key}) : super(key: key);
   final FirebaseStorage storage = FirebaseStorage.instance;
 
-  Future<XFile?> getImage() async {
-    final ImagePicker picker = ImagePicker();
-    XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    return image;
+  Future<Uint8List?> getImage() async {
+    final imageBytes = await ImagePickerWeb.getImageAsBytes();
+    if (imageBytes != null) {
+      return Uint8List.fromList(imageBytes);
+    }
+    return null;
   }
 
-  Future<void> uploadImage(String path) async {
-    File file = File(path);
+  Future<void> uploadImage(Uint8List imageData) async {
     try {
+      String base64Image = base64Encode(imageData);
+      String dataUrl = 'data:image/png;base64,$base64Image';
       String ref = 'imagens/img-${DateTime.now().toString()}.png';
-      await storage.ref(ref).putFile(file);
+      await storage
+          .ref(ref)
+          .putString(dataUrl, format: PutStringFormat.dataUrl);
+      print('Imagem carregada com sucesso!');
     } on FirebaseException catch (e) {
-      throw Exception('Erro no upload: ${e.code}');
+      print('Erro no upload: ${e.code}');
     }
   }
 
   pickAndUploadImage() async {
-    XFile? file = await getImage();
-    if (file != null) {
-      uploadImage(file.path);
+    Uint8List? imageData = await getImage();
+    if (imageData != null) {
+      uploadImage(imageData);
     }
   }
 

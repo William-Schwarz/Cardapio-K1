@@ -6,14 +6,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: "<KEY>",
-      authDomain: "k1-cardapio.firebaseapp.com",
-      databaseURL: "https://k1-cardapio.firebaseio.com",
-      projectId: "k1-cardapio",
-      storageBucket: "k1-cardapio.appspot.com",
-      messagingSenderId: "1062444444444",
-      appId: "1:1062444444444:web:3232323232323232323232",
-    ),
+        apiKey: "AIzaSyD1PYevclxt1qxJBAacjC_qzXfWFnQsov0",
+        authDomain: "cardapio-k1-c3881.firebaseapp.com",
+        databaseURL: "https://cardapio-k1-default-rtdb.firebaseio.com",
+        projectId: "cardapio-k1",
+        storageBucket: "cardapio-k1.appspot.com",
+        messagingSenderId: "894308179973",
+        appId: "1:894308179973:web:a87d10da32da16c0f33c6c"),
   );
   runApp(
     const MyApp(),
