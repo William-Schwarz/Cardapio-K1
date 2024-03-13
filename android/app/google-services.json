@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "894308179973",
+    "firebase_url": "https://cardapio-k1-default-rtdb.firebaseio.com",
+    "project_id": "cardapio-k1",
+    "storage_bucket": "cardapio-k1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894308179973:android:39bd3d8379152403f33c6c",
+        "android_client_info": {
+          "package_name": "com.example.k1_cardapio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp2BMUQFATtC1BOQMlttlr58faCxOBbrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
