@@ -21,7 +21,9 @@ class ListMenusController {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          final cardapios = snapshot.data!;
+          List<Cardapio> cardapios = snapshot.data!;
+          // Ordenar a lista de cardápios pela data inicial
+          cardapios.sort((a, b) => a.dataInicial.compareTo(b.dataInicial));
           return ListView.builder(
             shrinkWrap: true,
             itemCount: cardapios.length,

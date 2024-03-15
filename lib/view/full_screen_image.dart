@@ -14,7 +14,7 @@ class FullScreenImage extends StatelessWidget {
           onTap: () {
             Navigator.of(context).pop();
           },
-          child: Image.asset(imagePath),
+          child: Image.network(imagePath),
         ),
       ),
     );

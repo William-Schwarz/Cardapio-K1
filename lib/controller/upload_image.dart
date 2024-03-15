@@ -1,10 +1,7 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
 class UploadImageController extends ChangeNotifier {
@@ -36,7 +33,7 @@ class UploadImageController extends ChangeNotifier {
         // Codifica a imagem em base64
         String base64Image = base64Encode(_imageData!);
 
-        // Salva os dados no Firestore, incluindo a imagem codificada em base64
+        // Salva os dados no Firestore
         await firestore.collection('Cardapios').add({
           'Nome': nome,
           'DataInicial': dataInicial,

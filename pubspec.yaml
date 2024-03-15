@@ -38,7 +38,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_slidable: ^3.0.1
   image_picker: ^1.0.7
-  image:
   firebase_core: ^2.27.1
   firebase_storage: ^11.6.10
   cloud_firestore: ^4.15.9

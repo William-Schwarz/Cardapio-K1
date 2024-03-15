@@ -117,7 +117,7 @@ class _UpdateState extends State<Update> {
                         final DateTime? picked = await showDatePicker(
                           context: context,
                           initialDate: _endDate,
-                          firstDate: _startDate,
+                          firstDate: DateTime(2020),
                           lastDate: DateTime(2101),
                         );
                         if (picked != null && picked != _endDate) {

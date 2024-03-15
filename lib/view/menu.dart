@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:k1_cardapio/controller/menu.dart';
+import 'package:k1_cardapio/model/menu.dart';
 import 'package:k1_cardapio/view/list_menus.dart';
 
 class Menu extends StatefulWidget {
@@ -10,11 +12,22 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   late ListMenusController _listMenuController;
+  String? _imageUrl;
 
   @override
   void initState() {
     super.initState();
     _listMenuController = ListMenusController();
+    _loadImageUrl();
+  }
+
+  void _loadImageUrl() async {
+    List<Cardapio> cardapios = await CardapioController.getCardapios();
+    if (cardapios.isNotEmpty) {
+      setState(() {
+        _imageUrl = cardapios.first.imagem;
+      });
+    }
   }
 
   @override
@@ -32,12 +45,13 @@ class _MenuState extends State<Menu> {
                 const SizedBox(
                   height: 1,
                 ),
-                Image.asset(
-                  'images/2.png',
-                  width: 800,
-                  height: 800,
-                  fit: BoxFit.contain,
-                ),
+                if (_imageUrl != null)
+                  Image.network(
+                    _imageUrl!,
+                    width: 800,
+                    height: 800,
+                    fit: BoxFit.contain,
+                  ),
                 const SizedBox(
                   height: 12,
                 ),

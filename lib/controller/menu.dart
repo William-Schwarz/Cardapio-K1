@@ -1,8 +1,11 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:k1_cardapio/cors_middleware.dart';
 import 'package:k1_cardapio/model/menu.dart';
 
 class CardapioController {
-  static Future<List<Cardapio>> getCardapios() async {
+  static Future<List<Cardapio>> getCardapios([HttpRequest? request]) async {
     List<Cardapio> cardapios = [];
 
     try {
@@ -18,8 +21,7 @@ class CardapioController {
               nome: data['Nome'],
               dataInicial: data['DataInicial'],
               dataFinal: data['DataFinal'],
-              imagem: data['Imagem'], // Mantenha a URL original da imagem
-              dataAdicao: DateTime.now().toString(),
+              imagem: data['Imagem'],
             ),
           );
         }
@@ -30,4 +32,13 @@ class CardapioController {
 
     return cardapios;
   }
+}
+
+void main() async {
+  var server = await HttpServer.bind(InternetAddress.anyIPv4, 8080);
+
+  server.listen(corsMiddleware(CardapioController.getCardapios) as void
+      Function(HttpRequest event)?);
+
+  print('Servidor iniciado na porta ${server.port}');
 }
