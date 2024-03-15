@@ -15,5 +15,9 @@ service cloud.firestore {
     match /Cardapios/{document=**} {
       allow read, write;
     }
+    match /Avaliacoes/{document=**} {
+      allow read, write;
+    }
   }
+  
 }

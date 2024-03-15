@@ -18,6 +18,7 @@ class CardapioController {
         if (data != null) {
           cardapios.add(
             Cardapio(
+              id: doc.id,
               nome: data['Nome'],
               dataInicial: data['DataInicial'],
               dataFinal: data['DataFinal'],

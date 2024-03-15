@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:k1_cardapio/controller/assesment.dart';
 
 class ReviewDialog extends StatefulWidget {
+  final String idCardapio;
   final String nomeCardapio;
 
-  const ReviewDialog({Key? key, required this.nomeCardapio}) : super(key: key);
+  const ReviewDialog(
+      {Key? key, required this.nomeCardapio, required this.idCardapio})
+      : super(key: key);
 
   @override
   ReviewDialogState createState() => ReviewDialogState();
 }
 
 class ReviewDialogState extends State<ReviewDialog> {
-  int _rating = 0;
-  String _comment = '';
+  final AvaliacaoController avaliacaoController = AvaliacaoController();
+  late int _rating = 0;
+  late String _comment = '';
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +79,11 @@ class ReviewDialogState extends State<ReviewDialog> {
         ),
         TextButton(
           onPressed: () {
-            //usar o _rating e o _comment para enviar a avaliação
+            avaliacaoController.postAvaliacoes(
+              id: widget.idCardapio,
+              nota: _rating,
+              comentario: _comment,
+            );
             Navigator.of(context).pop();
           },
           style: TextButton.styleFrom(

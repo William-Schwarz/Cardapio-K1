@@ -52,6 +52,7 @@ class ListMenusController {
                               context: context,
                               builder: (BuildContext context) {
                                 return ReviewDialog(
+                                  idCardapio: cardapio.id,
                                   nomeCardapio: cardapio.nome,
                                 );
                               },
