@@ -8,3 +8,12 @@ service firebase.storage {
     }
   }
 }
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Permite leitura e escrita em qualquer documento dentro da coleção "Cardapios"
+    match /Cardapios/{document=**} {
+      allow read, write;
+    }
+  }
+}

@@ -1,60 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:k1_cardapio/model/menu.dart';
 
 class CardapioController {
-  static List<Cardapio> tabela = [
-    Cardapio(
-      icone: 'images/1.png',
-      nome: 'Teste 1',
-      data: '01/01/2021',
-    ),
-    Cardapio(
-      icone: 'images/1.png',
-      nome: 'Teste 2',
-      data: '01/01/2021',
-    ),
-    Cardapio(
-      icone: 'images/1.png',
-      nome: 'Teste 3',
-      data: '01/01/2021',
-    ),
-    Cardapio(
-      icone: 'images/1.png',
-      nome: 'Teste 4',
-      data: '01/01/2021',
-    ),
-    Cardapio(
-      icone: 'images/1.png',
-      nome: 'Teste 5',
-      data: '01/01/2021',
-    ),
-    Cardapio(
-      icone: 'images/1.png',
-      nome: 'Teste 6',
-      data: '01/01/2021',
-    ),
-    Cardapio(
-      icone: 'images/1.png',
-      nome: 'Teste 7',
-      data: '01/01/2021',
-    ),
-    Cardapio(
-      icone: 'images/1.png',
-      nome: 'Teste 8',
-      data: '01/01/2021',
-    ),
-    Cardapio(
-      icone: 'images/1.png',
-      nome: 'Teste 9',
-      data: '01/01/2021',
-    ),
-    Cardapio(
-      icone: 'images/1.png',
-      nome: 'Teste 10',
-      data: '01/01/2021',
-    ),
-  ];
+  static Future<List<Cardapio>> getCardapios() async {
+    List<Cardapio> cardapios = [];
 
-  get length => null;
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('Cardapios').get();
 
-  buildListView() {}
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+
+        if (data != null) {
+          cardapios.add(
+            Cardapio(
+              nome: data['Nome'],
+              dataInicial: data['DataInicial'],
+              dataFinal: data['DataFinal'],
+              imagem: data['Imagem'], // Mantenha a URL original da imagem
+              dataAdicao: DateTime.now().toString(),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print('Erro ao buscar cardápios: $e');
+    }
+
+    return cardapios;
+  }
 }

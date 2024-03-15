@@ -1,11 +1,15 @@
 class Cardapio {
-  String icone;
   String nome;
-  String data;
+  String dataInicial;
+  String dataFinal;
+  String imagem;
+  String dataAdicao;
 
   Cardapio({
-    required this.icone,
     required this.nome,
-    required this.data,
+    required this.dataInicial,
+    required this.dataFinal,
+    required this.imagem,
+    required this.dataAdicao,
   });
 }

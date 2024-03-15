@@ -1,45 +1,53 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
-class UploadImageController extends StatelessWidget {
-  UploadImageController({Key? key}) : super(key: key);
+class UploadImageController extends ChangeNotifier {
   final FirebaseStorage storage = FirebaseStorage.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  Uint8List? _imageData;
 
-  Future<Uint8List?> getImage() async {
-    final imageBytes = await ImagePickerWeb.getImageAsBytes();
-    if (imageBytes != null) {
-      return Uint8List.fromList(imageBytes);
-    }
-    return null;
+  Uint8List? get imageData => _imageData;
+
+  Future<Uint8List?> pickImage() async {
+    _imageData = await ImagePickerWeb.getImageAsBytes();
+    notifyListeners();
+    return _imageData;
   }
 
-  Future<void> uploadImage(Uint8List imageData) async {
-    try {
-      String base64Image = base64Encode(imageData);
-      String dataUrl = 'data:image/png;base64,$base64Image';
-      String ref = 'imagens/img-${DateTime.now().toString()}.png';
-      await storage
-          .ref(ref)
-          .putString(dataUrl, format: PutStringFormat.dataUrl);
-      print('Imagem carregada com sucesso!');
-    } on FirebaseException catch (e) {
-      print('Erro no upload: ${e.code}');
-    }
-  }
+  Future<void> uploadImage({
+    required String nome,
+    required String dataInicial,
+    required String dataFinal,
+    required Uint8List uint8list,
+  }) async {
+    if (_imageData != null) {
+      try {
+        // Salva a imagem no Firebase Storage
+        String ref = 'imagens/img-${DateTime.now().toString()}.png';
+        await storage.ref(ref).putData(_imageData!);
+        print('Imagem Salva');
 
-  pickAndUploadImage() async {
-    Uint8List? imageData = await getImage();
-    if (imageData != null) {
-      uploadImage(imageData);
-    }
-  }
+        // Codifica a imagem em base64
+        String base64Image = base64Encode(_imageData!);
 
-  @override
-  Widget build(BuildContext context) {
-    throw UnimplementedError();
+        // Salva os dados no Firestore, incluindo a imagem codificada em base64
+        await firestore.collection('Cardapios').add({
+          'Nome': nome,
+          'DataInicial': dataInicial,
+          'DataFinal': dataFinal,
+          'Imagem': base64Image,
+        });
+
+        print('Dados Salvas no Firestore');
+      } on FirebaseException catch (e) {
+        print('Erro no upload: ${e.code}');
+      }
+    }
   }
 }
