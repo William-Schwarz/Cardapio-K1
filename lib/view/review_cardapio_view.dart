@@ -13,7 +13,7 @@ class ReviewCardapioDialog extends StatefulWidget {
   ReviewCardapioDialogState createState() => ReviewCardapioDialogState();
 }
 
-class ReviewDialogState extends State<ReviewCardapioDialog> {
+class ReviewCardapioDialogState extends State<ReviewCardapioDialog> {
   final AvaliacaoController avaliacaoController = AvaliacaoController();
   late int _rating = 0;
   late String _comment = '';
