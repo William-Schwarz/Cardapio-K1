@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:k1_cardapio/controller/avaliacao_controller.dart';
 
@@ -15,7 +17,7 @@ class ReviewCardapioDialog extends StatefulWidget {
 
 class ReviewCardapioDialogState extends State<ReviewCardapioDialog> {
   final AvaliacaoController avaliacaoController = AvaliacaoController();
-  late int _rating = 0;
+  late int _rating = 1;
   late String _comment = '';
 
   @override
@@ -84,10 +86,26 @@ class ReviewCardapioDialogState extends State<ReviewCardapioDialog> {
               nota: _rating,
               comentario: _comment,
             );
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Avaliação enviada com sucesso!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                duration: const Duration(seconds: 2),
+              ),
+            );
             Navigator.of(context).pop();
           },
           style: TextButton.styleFrom(
-            foregroundColor: Colors.blue,
+            foregroundColor: const Color.fromARGB(255, 156, 16, 6),
           ),
           child: const Text('Enviar'),
         ),

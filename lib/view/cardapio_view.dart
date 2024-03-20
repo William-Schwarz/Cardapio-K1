@@ -24,6 +24,7 @@ class _CardapioState extends State<Cardapio> {
   void _loadImageUrl() async {
     List<Cardapios> cardapios = await CardapioController.getCardapios();
     if (cardapios.isNotEmpty) {
+      cardapios.sort((a, b) => b.data.compareTo(a.data));
       setState(() {
         _imageUrl = cardapios.first.imagemURL;
       });

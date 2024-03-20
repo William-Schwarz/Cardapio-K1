@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:k1_cardapio/controller/cardapio_controller.dart';
 
@@ -19,113 +21,195 @@ class _AtualizarState extends State<Atualizar> {
     super.initState();
     _startDate = DateTime.now();
     _endDate = _startDate.add(
-      const Duration(days: 4),
+      const Duration(days: 5),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      _descricao = value;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Descrição',
-                    hintText: 'Ex: Cardápio especial',
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(25.0),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _descricao = value;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Descrição do Cardápio',
+                      hintText: 'Ex: Cardápio Especial',
+                    ),
+                    style: const TextStyle(fontSize: 18),
                   ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Row(
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () async {
-                        final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: _startDate,
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2101),
-                        );
-                        if (picked != null && picked != _startDate) {
-                          setState(() {
-                            _startDate = picked;
-                          });
-                        }
-                      },
-                      icon: const Icon(Icons.calendar_today),
-                      label: Text('Início: ${_formatDate(_startDate)}'),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          final DateTime? picked = await showDatePicker(
+                            context: context,
+                            initialDate: _startDate,
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2101),
+                          );
+                          if (picked != null &&
+                              picked != _startDate &&
+                              picked.isBefore(_endDate)) {
+                            setState(() {
+                              _startDate = picked;
+                            });
+                          } else if (picked != null) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Data Inicial Inválida!'),
+                                  content: const Text(
+                                      'Por favor, selecione uma data inicial válida antes da data final.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.calendar_today),
+                        label: Text('Início: ${_formatDate(_startDate)}'),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          final DateTime? picked = await showDatePicker(
+                            context: context,
+                            initialDate: _endDate,
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2101),
+                          );
+                          if (picked != null &&
+                              picked != _endDate &&
+                              picked.isAfter(_startDate)) {
+                            setState(() {
+                              _endDate = picked;
+                            });
+                          } else if (picked != null) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Data Final Inválida!'),
+                                  content: const Text(
+                                      'Por favor, selecione uma data final válida após a data inicial.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.calendar_today),
+                        label: Text('Fim: ${_formatDate(_endDate)}'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  if (uploadController.imageData != null)
+                    Image.memory(
+                      uploadController.imageData!,
+                      fit: BoxFit.contain,
                     ),
-                    const SizedBox(width: 10),
-                    ElevatedButton.icon(
-                      onPressed: () async {
-                        final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: _endDate,
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2101),
-                        );
-                        if (picked != null && picked != _endDate) {
-                          setState(() {
-                            _endDate = picked;
-                          });
-                        }
-                      },
-                      icon: const Icon(Icons.calendar_today),
-                      label: Text('Fim: ${_formatDate(_endDate)}'),
+                  if (uploadController.imageData != null)
+                    const SizedBox(
+                      height: 5,
                     ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Row(
-                  children: [
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      await uploadController.pickImage();
+                      setState(() {});
+                    },
+                    icon: const Icon(Icons.upload),
+                    label: const Text('Carregar Cardápio'),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  if (uploadController.imageData != null)
                     ElevatedButton.icon(
                       onPressed: () async {
-                        await uploadController.pickImage();
-                      },
-                      icon: const Icon(Icons.upload),
-                      label: const Text('Carregar Cardápio'),
-                    ),
-                    const SizedBox(width: 10),
-                    ElevatedButton.icon(
-                      onPressed: () async {
-                        // Adicione o imageData como argumento
-                        if (uploadController.imageData != null) {
+                        if (_descricao.isNotEmpty) {
                           await uploadController.postCardapios(
                             nome: _descricao,
                             dataInicial: _formatDate(_startDate),
                             dataFinal: _formatDate(_endDate),
                             uint8list: uploadController.imageData!,
                           );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: BackdropFilter(
+                                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Cardápio atualizado com sucesso!',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Erro ao Salvar!'),
+                                content: const Text(
+                                    'Por favor, preencha o campo de Descrição do Cardápio.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         }
                       },
                       icon: const Icon(Icons.save),
                       label: const Text('Salvar'),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 25),
-                if (uploadController.imageData != null)
-                  Image.memory(
-                    uploadController.imageData!,
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
