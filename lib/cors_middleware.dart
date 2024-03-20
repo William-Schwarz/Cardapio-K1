@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 FutureOr<Function> corsMiddleware(handler) {
   return (HttpRequest request) async {
     var response = await handler(request);
@@ -38,5 +40,7 @@ void main() async {
     return request.response;
   }) as void Function(HttpRequest event)?);
 
-  print('Servidor iniciado na porta ${server.port}');
+  if (kDebugMode) {
+    print('Servidor iniciado na porta ${server.port}');
+  }
 }

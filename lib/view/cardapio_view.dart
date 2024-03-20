@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:k1_cardapio/controller/menu.dart';
-import 'package:k1_cardapio/model/menu.dart';
-import 'package:k1_cardapio/view/list_menus.dart';
+import 'package:k1_cardapio/controller/cardapio_controller.dart';
+import 'package:k1_cardapio/model/cardapios_modelo.dart';
+import 'package:k1_cardapio/view/list_cardapios_view.dart';
 
-class Menu extends StatefulWidget {
-  const Menu({Key? key}) : super(key: key);
+class Cardapio extends StatefulWidget {
+  const Cardapio({Key? key}) : super(key: key);
 
   @override
-  State<Menu> createState() => _MenuState();
+  State<Cardapio> createState() => _CardapioState();
 }
 
-class _MenuState extends State<Menu> {
-  late ListMenusController _listMenuController;
+class _CardapioState extends State<Cardapio> {
+  late ListCardapios _listMenuController;
   String? _imageUrl;
 
   @override
   void initState() {
     super.initState();
-    _listMenuController = ListMenusController();
+    _listMenuController = ListCardapios();
     _loadImageUrl();
   }
 
   void _loadImageUrl() async {
-    List<Cardapio> cardapios = await CardapioController.getCardapios();
+    List<Cardapios> cardapios = await CardapioController.getCardapios();
     if (cardapios.isNotEmpty) {
       setState(() {
-        _imageUrl = cardapios.first.imagem;
+        _imageUrl = cardapios.first.imagemURL;
       });
     }
   }

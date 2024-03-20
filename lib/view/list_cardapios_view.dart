@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:k1_cardapio/controller/menu.dart';
-import 'package:k1_cardapio/model/menu.dart';
+import 'package:k1_cardapio/controller/cardapio_controller.dart';
+import 'package:k1_cardapio/model/cardapios_modelo.dart';
 import 'package:k1_cardapio/view/full_screen_image.dart';
-import 'package:k1_cardapio/view/review_menu.dart';
+import 'package:k1_cardapio/view/review_cardapio_view.dart';
 
-class ListMenusController {
+class ListCardapios {
   bool isListOpen = false;
 
   void toggleListVisibility() {
@@ -13,15 +13,15 @@ class ListMenusController {
   }
 
   Widget buildListView() {
-    return FutureBuilder<List<Cardapio>>(
+    return FutureBuilder<List<Cardapios>>(
       future: CardapioController.getCardapios(),
-      builder: (BuildContext context, AsyncSnapshot<List<Cardapio>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<Cardapios>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          List<Cardapio> cardapios = snapshot.data!;
+          List<Cardapios> cardapios = snapshot.data!;
           // Ordenar a lista de cardápios pela data inicial
           cardapios.sort((a, b) => a.dataInicial.compareTo(b.dataInicial));
           return ListView.builder(
@@ -36,7 +36,7 @@ class ListMenusController {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => FullScreenImage(
-                          imagePath: cardapio.imagem,
+                          imagePath: cardapio.imagemURL,
                         ),
                       ),
                     );
@@ -51,7 +51,7 @@ class ListMenusController {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return ReviewDialog(
+                                return ReviewCardapioDialog(
                                   idCardapio: cardapio.id,
                                   nomeCardapio: cardapio.nome,
                                 );
@@ -83,7 +83,7 @@ class ListMenusController {
                         children: [
                           ListTile(
                             leading: Image.network(
-                              cardapio.imagem,
+                              cardapio.imagemURL,
                               width: 50,
                               height: 50,
                             ),

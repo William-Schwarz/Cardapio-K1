@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:k1_cardapio/controller/assesment.dart';
+import 'package:k1_cardapio/controller/avaliacao_controller.dart';
 
-class ReviewDialog extends StatefulWidget {
+class ReviewCardapioDialog extends StatefulWidget {
   final String idCardapio;
   final String nomeCardapio;
 
-  const ReviewDialog(
+  const ReviewCardapioDialog(
       {Key? key, required this.nomeCardapio, required this.idCardapio})
       : super(key: key);
 
   @override
-  ReviewDialogState createState() => ReviewDialogState();
+  ReviewCardapioDialogState createState() => ReviewCardapioDialogState();
 }
 
-class ReviewDialogState extends State<ReviewDialog> {
+class ReviewDialogState extends State<ReviewCardapioDialog> {
   final AvaliacaoController avaliacaoController = AvaliacaoController();
   late int _rating = 0;
   late String _comment = '';

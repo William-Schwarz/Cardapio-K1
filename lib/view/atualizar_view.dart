@@ -1,59 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:k1_cardapio/controller/cardapio_controller.dart';
 
-class UploadImageController extends ChangeNotifier {
-  final FirebaseStorage storage = FirebaseStorage.instance;
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  Uint8List? _imageData;
-
-  Uint8List? get imageData => _imageData;
-
-  Future<Uint8List?> pickImage() async {
-    _imageData = await ImagePickerWeb.getImageAsBytes();
-    notifyListeners();
-    return _imageData;
-  }
-
-  Future<void> uploadImage(
-      {required String nome,
-      required String dataInicial,
-      required String dataFinal,
-      required Uint8List uint8list}) async {
-    if (_imageData != null) {
-      try {
-        // Salva a imagem no Firebase Storage
-        String ref = 'imagens/img-${DateTime.now().toString()}.png';
-        await storage.ref(ref).putData(_imageData!);
-        String imageUrl = await storage.ref(ref).getDownloadURL();
-
-        // Salva os dados no Firestore
-        await firestore.collection('Cardapios').add({
-          'Nome': nome,
-          'DataInicial': dataInicial,
-          'DataFinal': dataFinal,
-          'Imagem': imageUrl,
-        });
-
-        print('Imagem Salva no Storage e Firestore');
-      } catch (e) {
-        print('Erro no upload: $e');
-      }
-    }
-  }
-}
-
-class Update extends StatefulWidget {
-  const Update({Key? key}) : super(key: key);
+class Atualizar extends StatefulWidget {
+  const Atualizar({Key? key}) : super(key: key);
 
   @override
-  State<Update> createState() => _UpdateState();
+  State<Atualizar> createState() => _AtualizarState();
 }
 
-class _UpdateState extends State<Update> {
-  final UploadImageController uploadController = UploadImageController();
+class _AtualizarState extends State<Atualizar> {
+  final CardapioController uploadController = CardapioController();
   late DateTime _startDate;
   late DateTime _endDate;
   late String _descricao = '';
@@ -148,7 +104,7 @@ class _UpdateState extends State<Update> {
                       onPressed: () async {
                         // Adicione o imageData como argumento
                         if (uploadController.imageData != null) {
-                          await uploadController.uploadImage(
+                          await uploadController.postCardapios(
                             nome: _descricao,
                             dataInicial: _formatDate(_startDate),
                             dataFinal: _formatDate(_endDate),

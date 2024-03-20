@@ -1,19 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:k1_cardapio/controller/assesment.dart';
-import 'package:k1_cardapio/model/assesment.dart';
+import 'package:k1_cardapio/controller/avaliacao_controller.dart';
+import 'package:k1_cardapio/model/avaliacoes_model.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:k1_cardapio/cors_middleware.dart';
 
-class Assessment extends StatefulWidget {
-  const Assessment({Key? key}) : super(key: key);
+class Avaliacao extends StatefulWidget {
+  const Avaliacao({Key? key}) : super(key: key);
 
   @override
-  State<Assessment> createState() => _AssessmentState();
+  State<Avaliacao> createState() => _AvaliacaoState();
 }
 
-class _AssessmentState extends State<Assessment> {
-  late Future<List<Avaliacao>> _avaliacao;
+class _AvaliacaoState extends State<Avaliacao> {
+  late Future<List<Avaliacoes>> _avaliacao;
 
   @override
   void initState() {
@@ -21,16 +22,18 @@ class _AssessmentState extends State<Assessment> {
     _avaliacao = getAvaliacoes();
   }
 
-  Future<List<Avaliacao>> getAvaliacoes() async {
+  Future<List<Avaliacoes>> getAvaliacoes() async {
     try {
       return AvaliacaoController.getAvaliacao();
     } catch (e) {
-      print('Erro ao buscar avaliações: $e');
+      if (kDebugMode) {
+        print('Erro ao buscar avaliações: $e');
+      }
       return [];
     }
   }
 
-  double calcularMedia(List<Avaliacao> avaliacoes) {
+  double calcularMedia(List<Avaliacoes> avaliacoes) {
     if (avaliacoes.isEmpty) return 0.0;
 
     double total = 0.0;
@@ -46,7 +49,7 @@ class _AssessmentState extends State<Assessment> {
       appBar: AppBar(
         title: const Text('Avaliações'),
       ),
-      body: FutureBuilder<List<Avaliacao>>(
+      body: FutureBuilder<List<Avaliacoes>>(
         future: _avaliacao,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -54,7 +57,7 @@ class _AssessmentState extends State<Assessment> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Erro: ${snapshot.error}'));
           } else {
-            List<Avaliacao> avaliacoes = snapshot.data ?? [];
+            List<Avaliacoes> avaliacoes = snapshot.data ?? [];
             double media = calcularMedia(avaliacoes);
             return Column(
               children: [
@@ -67,7 +70,7 @@ class _AssessmentState extends State<Assessment> {
                   child: ListView.builder(
                     itemCount: avaliacoes.length,
                     itemBuilder: (context, index) {
-                      Avaliacao avaliacao = avaliacoes[index];
+                      Avaliacoes avaliacao = avaliacoes[index];
                       return ListTile(
                         title: Text('Nota: ${avaliacao.nota}'),
                         subtitle: Text('Comentário: ${avaliacao.comentario}'),
@@ -106,5 +109,7 @@ void main() async {
   server.listen(corsMiddleware(AvaliacaoController()) as void Function(
       HttpRequest event)?);
 
-  print('Servidor iniciado na porta ${server.port}');
+  if (kDebugMode) {
+    print('Servidor iniciado na porta ${server.port}');
+  }
 }

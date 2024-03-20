@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:k1_cardapio/cors_middleware.dart';
-import 'package:k1_cardapio/model/assesment.dart';
+import 'package:k1_cardapio/model/avaliacoes_model.dart';
 
 class AvaliacaoController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  static Future<List<Avaliacao>> getAvaliacao([HttpRequest? request]) async {
-    List<Avaliacao> avaliacoes = [];
+  static Future<List<Avaliacoes>> getAvaliacao([HttpRequest? request]) async {
+    List<Avaliacoes> avaliacoes = [];
     try {
       QuerySnapshot querySnapshot =
           await FirebaseFirestore.instance.collection('Avaliacoes').get();
@@ -18,7 +19,7 @@ class AvaliacaoController {
 
         if (data != null) {
           avaliacoes.add(
-            Avaliacao(
+            Avaliacoes(
               id: doc.id,
               nota: data['Nota'] as int,
               comentario: data['Comentario'],
@@ -27,7 +28,9 @@ class AvaliacaoController {
         }
       }
     } catch (e) {
-      print('Erro ao buscar cardápios: $e');
+      if (kDebugMode) {
+        print('Erro ao buscar cardápios: $e');
+      }
     }
     return avaliacoes;
   }
@@ -44,9 +47,13 @@ class AvaliacaoController {
         'Comentario': comentario,
       });
 
-      print('Dados Salvas no Firestore');
+      if (kDebugMode) {
+        print('Dados Salvas no Firestore');
+      }
     } on FirebaseException catch (e) {
-      print('Erro no upload: ${e.code}');
+      if (kDebugMode) {
+        print('Erro no upload: ${e.code}');
+      }
     }
   }
 }
@@ -57,5 +64,7 @@ void main() async {
   server.listen(corsMiddleware(AvaliacaoController.getAvaliacao) as void
       Function(HttpRequest event)?);
 
-  print('Servidor iniciado na porta ${server.port}');
+  if (kDebugMode) {
+    print('Servidor iniciado na porta ${server.port}');
+  }
 }

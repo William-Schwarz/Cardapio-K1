@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:k1_cardapio/view/assesment.dart';
-import 'package:k1_cardapio/view/menu.dart';
-import 'package:k1_cardapio/view/update.dart';
+import 'package:k1_cardapio/view/avaliacao_view.dart';
+import 'package:k1_cardapio/view/cardapio_view.dart';
+import 'package:k1_cardapio/view/atualizar_view.dart';
 
 class NewPage extends StatelessWidget {
   final int indice;
@@ -12,11 +12,11 @@ class NewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget page;
     if (indice == 0) {
-      page = const Menu();
+      page = const Cardapio();
     } else if (indice == 1) {
-      page = const Assessment();
+      page = const Avaliacao();
     } else if (indice == 2) {
-      page = const Update();
+      page = const Atualizar();
     } else {
       page = Scaffold(
         appBar: AppBar(
