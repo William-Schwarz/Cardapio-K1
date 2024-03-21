@@ -29,6 +29,7 @@ class ListCardapios {
           }
           return ListView.builder(
             shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: cardapios.length,
             itemBuilder: (BuildContext context, int index) {
               final cardapio = cardapios[index];
@@ -110,7 +111,7 @@ class ListCardapios {
                   ),
                 );
               } else {
-                return const Text('Nenhum Cardápio');
+                return const SizedBox();
               }
             },
           );

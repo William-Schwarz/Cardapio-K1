@@ -1,8 +1,9 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:k1_cardapio/cors_middleware.dart';
 import 'package:k1_cardapio/model/cardapios_modelo.dart';
 
@@ -14,16 +15,21 @@ class CardapioController extends ChangeNotifier {
   Uint8List? get imageData => _imageData;
 
   Future<Uint8List?> pickImage() async {
-    _imageData = await ImagePickerWeb.getImageAsBytes();
-    notifyListeners();
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      _imageData = await pickedImage.readAsBytes();
+      notifyListeners();
+    }
     return _imageData;
   }
 
-  Future<void> postCardapios(
-      {required String nome,
-      required String dataInicial,
-      required String dataFinal,
-      required Uint8List uint8list}) async {
+  Future<void> postCardapios({
+    required String nome,
+    required String dataInicial,
+    required String dataFinal,
+    required Uint8List uint8list,
+  }) async {
     if (_imageData != null) {
       try {
         // Salva a imagem no Firebase Storage
@@ -31,15 +37,12 @@ class CardapioController extends ChangeNotifier {
         await storage.ref(ref).putData(_imageData!);
         String imageUrl = await storage.ref(ref).getDownloadURL();
 
-        //String base64Image = base64Encode(_imageData!);
-
         // Salva os dados no Firestore
         await firestore.collection('Cardapios').add({
           'Nome': nome,
           'DataInicial': dataInicial,
           'DataFinal': dataFinal,
           'ImagemURL': imageUrl,
-          //'ImagemBase64': base64Image, //precisa ver para diminuir a codificação
           'Data': DateTime.now(),
         });
 
@@ -72,7 +75,6 @@ class CardapioController extends ChangeNotifier {
               dataInicial: data['DataInicial'],
               dataFinal: data['DataFinal'],
               imagemURL: data['ImagemURL'],
-              //imagemBase64: data['ImagemBase64'],
               data: (data['Data'] as Timestamp).toDate(),
             ),
           );

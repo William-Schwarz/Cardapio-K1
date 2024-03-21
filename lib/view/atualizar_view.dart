@@ -53,6 +53,7 @@ class _AtualizarState extends State<Atualizar> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ElevatedButton.icon(
                         onPressed: () async {

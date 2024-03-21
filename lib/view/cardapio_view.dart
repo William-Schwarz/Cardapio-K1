@@ -13,6 +13,7 @@ class Cardapio extends StatefulWidget {
 class _CardapioState extends State<Cardapio> {
   late ListCardapios _listMenuController;
   String? _imageUrl;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -27,6 +28,7 @@ class _CardapioState extends State<Cardapio> {
       cardapios.sort((a, b) => b.data.compareTo(a.data));
       setState(() {
         _imageUrl = cardapios.first.imagemURL;
+        _isLoading = false;
       });
     }
   }
@@ -36,21 +38,21 @@ class _CardapioState extends State<Cardapio> {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
+          child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(
-                  height: 1,
+                  height: 12,
                 ),
-                if (_imageUrl != null)
+                if (_isLoading) const CircularProgressIndicator(),
+                if (!_isLoading && _imageUrl != null)
                   Image.network(
                     _imageUrl!,
-                    width: 800,
-                    height: 800,
+                    width: 400,
+                    height: 400,
                     fit: BoxFit.contain,
                   ),
                 const SizedBox(
