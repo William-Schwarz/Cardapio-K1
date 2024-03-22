@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:k1_cardapio/view/navigation.dart';
 
@@ -32,6 +33,12 @@ class MyApp extends StatelessWidget {
         colorSchemeSeed: const Color.fromARGB(255, 156, 16, 6),
         fontFamily: 'DINPro',
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+      ],
       home: const Navigation(),
     );
   }

@@ -63,8 +63,14 @@ class _AtualizarState extends State<Atualizar> {
                           final DateTime? picked = await showDatePicker(
                             context: context,
                             initialDate: _startDate,
-                            firstDate: DateTime(2020),
-                            lastDate: DateTime(2101),
+                            firstDate: DateTime.now().subtract(
+                              const Duration(
+                                days: 365,
+                              ),
+                            ),
+                            lastDate: DateTime.now().add(
+                              const Duration(days: 365),
+                            ),
                           );
                           if (picked != null &&
                               picked != _startDate &&
@@ -101,8 +107,14 @@ class _AtualizarState extends State<Atualizar> {
                           final DateTime? picked = await showDatePicker(
                             context: context,
                             initialDate: _endDate,
-                            firstDate: DateTime(2020),
-                            lastDate: DateTime(2101),
+                            firstDate: DateTime.now().subtract(
+                              const Duration(
+                                days: 365,
+                              ),
+                            ),
+                            lastDate: DateTime.now().add(
+                              const Duration(days: 365),
+                            ),
                           );
                           if (picked != null &&
                               picked != _endDate &&

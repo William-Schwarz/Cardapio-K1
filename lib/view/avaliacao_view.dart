@@ -46,9 +46,6 @@ class _AvaliacaoState extends State<Avaliacao> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Avaliações'),
-      ),
       body: FutureBuilder<List<Avaliacoes>>(
         future: _avaliacao,
         builder: (context, snapshot) {

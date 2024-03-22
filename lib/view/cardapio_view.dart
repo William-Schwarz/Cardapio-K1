@@ -62,8 +62,8 @@ class _CardapioState extends State<Cardapio> {
                   if (!_isLoading && _imageUrl != null)
                     Image.network(
                       _imageUrl!,
-                      width: 400,
-                      height: 400,
+                      width: 450,
+                      height: 450,
                       fit: BoxFit.contain,
                     ),
                   const SizedBox(
