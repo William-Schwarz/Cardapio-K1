@@ -27,11 +27,12 @@ class _AtualizarState extends State<Atualizar> {
 
   @override
   Widget build(BuildContext context) {
+    //double paddingValue = (MediaQuery.of(context).size.width) * 0.1;
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.all(25.0),
+            padding: const EdgeInsets.all(25),
             child: Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -49,11 +50,13 @@ class _AtualizarState extends State<Atualizar> {
                     style: const TextStyle(fontSize: 18),
                   ),
                   const SizedBox(
-                    height: 25,
+                    height: 16,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 16,
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.start,
                     children: [
                       ElevatedButton.icon(
                         onPressed: () async {
@@ -92,9 +95,6 @@ class _AtualizarState extends State<Atualizar> {
                         },
                         icon: const Icon(Icons.calendar_today),
                         label: Text('Início: ${_formatDate(_startDate)}'),
-                      ),
-                      const SizedBox(
-                        width: 10,
                       ),
                       ElevatedButton.icon(
                         onPressed: () async {
@@ -137,7 +137,7 @@ class _AtualizarState extends State<Atualizar> {
                     ],
                   ),
                   const SizedBox(
-                    height: 25,
+                    height: 16,
                   ),
                   if (uploadController.imageData != null)
                     Image.memory(
@@ -157,7 +157,7 @@ class _AtualizarState extends State<Atualizar> {
                     label: const Text('Carregar Cardápio'),
                   ),
                   const SizedBox(
-                    height: 25,
+                    height: 16,
                   ),
                   if (uploadController.imageData != null)
                     ElevatedButton.icon(
