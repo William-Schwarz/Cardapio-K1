@@ -21,8 +21,10 @@ class AvaliacaoController {
           avaliacoes.add(
             Avaliacoes(
               id: doc.id,
+              idCardapios: doc.id,
               nota: data['Nota'] as int,
               comentario: data['Comentario'],
+              data: (data['Data'] as Timestamp).toDate(),
             ),
           );
         }
@@ -36,15 +38,16 @@ class AvaliacaoController {
   }
 
   Future<void> postAvaliacoes({
-    required String id,
+    required String idCardapios,
     required int nota,
     required String comentario,
   }) async {
     try {
       await firestore.collection('Avaliacoes').add({
-        'Id': id,
+        'IdCardapios': idCardapios,
         'Nota': nota,
         'Comentario': comentario,
+        'Data': DateTime.now(),
       });
 
       if (kDebugMode) {

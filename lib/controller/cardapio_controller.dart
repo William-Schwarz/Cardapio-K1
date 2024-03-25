@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:k1_cardapio/cors_middleware.dart';
-import 'package:k1_cardapio/model/cardapios_modelo.dart';
+import 'package:k1_cardapio/model/cardapios_model.dart';
 
 class CardapioController extends ChangeNotifier {
   final FirebaseStorage storage = FirebaseStorage.instance;

@@ -82,7 +82,7 @@ class ReviewCardapioDialogState extends State<ReviewCardapioDialog> {
         TextButton(
           onPressed: () {
             avaliacaoController.postAvaliacoes(
-              id: widget.idCardapio,
+              idCardapios: widget.idCardapio,
               nota: _rating,
               comentario: _comment,
             );

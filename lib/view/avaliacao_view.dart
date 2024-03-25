@@ -1,10 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:k1_cardapio/controller/avaliacao_controller.dart';
-import 'package:k1_cardapio/model/avaliacoes_model.dart';
-import 'dart:async';
-import 'dart:io';
-import 'package:k1_cardapio/cors_middleware.dart';
+import 'package:k1_cardapio/controller/cardapio_avaliacao_controller.dart';
+import 'package:k1_cardapio/model/cardapio_avaliacao_model.dart';
 
 class Avaliacao extends StatefulWidget {
   const Avaliacao({Key? key}) : super(key: key);
@@ -14,7 +11,7 @@ class Avaliacao extends StatefulWidget {
 }
 
 class _AvaliacaoState extends State<Avaliacao> {
-  late Future<List<Avaliacoes>> _avaliacao;
+  late Future<List<AvaliacaoCardapio>> _avaliacao;
 
   @override
   void initState() {
@@ -22,9 +19,9 @@ class _AvaliacaoState extends State<Avaliacao> {
     _avaliacao = getAvaliacoes();
   }
 
-  Future<List<Avaliacoes>> getAvaliacoes() async {
+  Future<List<AvaliacaoCardapio>> getAvaliacoes() async {
     try {
-      return AvaliacaoController.getAvaliacao();
+      return CardapioAvaliacaoController.getCardapioAvaliacao();
     } catch (e) {
       if (kDebugMode) {
         print('Erro ao buscar avaliações: $e');
@@ -33,20 +30,25 @@ class _AvaliacaoState extends State<Avaliacao> {
     }
   }
 
-  double calcularMedia(List<Avaliacoes> avaliacoes) {
-    if (avaliacoes.isEmpty) return 0.0;
+  double calcularMediaGeral(List<AvaliacaoCardapio> avaliacoes) {
+    return CardapioAvaliacaoController().calcularMediaGeral(avaliacoes);
+  }
 
-    double total = 0.0;
-    for (var avaliacao in avaliacoes) {
-      total += avaliacao.nota;
-    }
-    return total / avaliacoes.length;
+  Map<String, List<AvaliacaoCardapio>> agruparAvaliacoesPorCardapio(
+      List<AvaliacaoCardapio> avaliacoes) {
+    return CardapioAvaliacaoController()
+        .agruparAvaliacoesPorCardapio(avaliacoes);
+  }
+
+  Map<Object, double> calcularMediaPorCardapio(
+      List<AvaliacaoCardapio> avaliacoes) {
+    return CardapioAvaliacaoController().calcularMediaPorCardapio(avaliacoes);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<Avaliacoes>>(
+      body: FutureBuilder<List<AvaliacaoCardapio>>(
         future: _avaliacao,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -54,28 +56,133 @@ class _AvaliacaoState extends State<Avaliacao> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Erro: ${snapshot.error}'));
           } else {
-            List<Avaliacoes> avaliacoes = snapshot.data ?? [];
-            double media = calcularMedia(avaliacoes);
-            return Column(
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: _buildStarRating(media),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: avaliacoes.length,
-                    itemBuilder: (context, index) {
-                      Avaliacoes avaliacao = avaliacoes[index];
-                      return ListTile(
-                        title: Text('Nota: ${avaliacao.nota}'),
-                        subtitle: Text('Comentário: ${avaliacao.comentario}'),
-                      );
-                    },
+            List<AvaliacaoCardapio> avaliacoes = snapshot.data ?? [];
+            double media = calcularMediaGeral(avaliacoes);
+            avaliacoes.sort((a, b) => b.data.compareTo(a.data));
+            Map<Object, double> mediaPorCardapio =
+                calcularMediaPorCardapio(avaliacoes);
+            Map<String, List<AvaliacaoCardapio>> avaliacoesAgrupadas =
+                agruparAvaliacoesPorCardapio(avaliacoes);
+            return Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: _buildStarRating(media),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: avaliacoesAgrupadas.length,
+                      itemBuilder: (context, index) {
+                        String cardapioId =
+                            avaliacoesAgrupadas.keys.elementAt(index);
+                        List<AvaliacaoCardapio> avaliacoesDoCardapio =
+                            avaliacoesAgrupadas[cardapioId] ?? [];
+                        calcularMediaGeral(avaliacoesDoCardapio);
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: ExpansionTile(
+                              childrenPadding: const EdgeInsets.only(
+                                  right: 24, left: 24, bottom: 8),
+                              leading: Image.network(
+                                avaliacoesDoCardapio.first.imagemURLCardapio,
+                                width: 50,
+                                height: 50,
+                              ),
+                              title: Text(
+                                avaliacoesDoCardapio.first.nomeCardapio,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: Text(
+                                'Média: ${mediaPorCardapio[cardapioId]?.toStringAsFixed(1) ?? 'N/A'}',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 4),
+                                  child: Text(
+                                    'Comentários:',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: avaliacoesDoCardapio
+                                      .where((avaliacao) =>
+                                          avaliacao.comentario.isNotEmpty)
+                                      .map((avaliacao) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4),
+                                      child: Card(
+                                        elevation: 2,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          side: BorderSide(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Icon(
+                                                Icons.person,
+                                                color: Color.fromARGB(
+                                                    255, 156, 16, 6),
+                                                size: 20,
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Expanded(
+                                                child: Text(
+                                                  '- ${avaliacao.comentario}',
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             );
           }
         },
@@ -84,29 +191,32 @@ class _AvaliacaoState extends State<Avaliacao> {
   }
 
   Widget _buildStarRating(double rating) {
-    return Column(
+    int numberOfStars = rating
+        .round(); // Arredonde a média para o número mais próximo de estrelas
+    List<Widget> stars = List.generate(
+      5,
+      (index) => Icon(
+        index < numberOfStars ? Icons.star : Icons.star_border,
+        size: 30,
+        color: const Color.fromARGB(255, 156, 16, 6),
+      ),
+    );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(
-          Icons.star,
-          size: 60,
-          color: Colors.yellow,
-        ),
-        Text(
-          rating.toStringAsFixed(1),
-          style: const TextStyle(fontSize: 24),
+        Column(
+          children: [
+            Row(
+              children: stars,
+            ),
+            Text(
+              'Média Geral: ${rating.toStringAsFixed(1)}',
+              style: const TextStyle(fontSize: 20),
+            ),
+          ],
         ),
       ],
     );
-  }
-}
-
-void main() async {
-  var server = await HttpServer.bind(InternetAddress.anyIPv4, 8080);
-
-  server.listen(corsMiddleware(AvaliacaoController()) as void Function(
-      HttpRequest event)?);
-
-  if (kDebugMode) {
-    print('Servidor iniciado na porta ${server.port}');
   }
 }

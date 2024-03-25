@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:k1_cardapio/controller/cardapio_controller.dart';
-import 'package:k1_cardapio/model/cardapios_modelo.dart';
+import 'package:k1_cardapio/model/cardapios_model.dart';
 import 'package:k1_cardapio/view/full_screen_image.dart';
 import 'package:k1_cardapio/view/list_cardapios_view.dart';
 
@@ -58,7 +58,7 @@ class _CardapioState extends State<Cardapio> {
                   const SizedBox(
                     height: 16,
                   ),
-                  if (_isLoading) const CircularProgressIndicator(),
+                  if (_isLoading) const LinearProgressIndicator(),
                   if (!_isLoading && _imageUrl != null)
                     Image.network(
                       _imageUrl!,
@@ -87,8 +87,8 @@ class _CardapioState extends State<Cardapio> {
                     },
                     child: Text(
                       _listMenuController.isListOpen
-                          ? 'Visualizar Cardápios Anteriores'
-                          : 'Fechar Cardápios Anteriores',
+                          ? 'Fechar Cardápios Anteriores'
+                          : 'Visualizar Cardápios Anteriores',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
