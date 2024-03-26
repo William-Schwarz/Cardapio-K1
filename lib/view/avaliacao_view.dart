@@ -136,14 +136,13 @@ class _AvaliacaoState extends State<Avaliacao> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 4),
                                       child: Card(
+                                        color: const Color.fromARGB(
+                                            255, 156, 16, 6),
                                         elevation: 2,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
-                                          side: BorderSide(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            width: 1,
-                                          ),
+                                          side: BorderSide.none,
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -152,9 +151,8 @@ class _AvaliacaoState extends State<Avaliacao> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               const Icon(
-                                                Icons.person,
-                                                color: Color.fromARGB(
-                                                    255, 156, 16, 6),
+                                                Icons.chat_sharp,
+                                                color: Colors.white,
                                                 size: 20,
                                               ),
                                               const SizedBox(width: 4),
@@ -162,6 +160,7 @@ class _AvaliacaoState extends State<Avaliacao> {
                                                 child: Text(
                                                   '- ${avaliacao.comentario}',
                                                   style: const TextStyle(
+                                                    color: Colors.white,
                                                     fontSize: 14,
                                                     fontStyle: FontStyle.italic,
                                                   ),
