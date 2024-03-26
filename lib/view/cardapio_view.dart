@@ -12,14 +12,14 @@ class Cardapio extends StatefulWidget {
 }
 
 class _CardapioState extends State<Cardapio> {
-  late ListCardapios _listMenuController;
+  late ListCardapiosState _listMenuController;
   String? _imageUrl;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _listMenuController = ListCardapios();
+    _listMenuController = ListCardapiosState();
     _loadImageUrl();
   }
 
@@ -58,7 +58,7 @@ class _CardapioState extends State<Cardapio> {
                   const SizedBox(
                     height: 16,
                   ),
-                  if (_isLoading) const LinearProgressIndicator(),
+                  if (_isLoading) const CircularProgressIndicator(),
                   if (!_isLoading && _imageUrl != null)
                     Image.network(
                       _imageUrl!,
@@ -87,8 +87,8 @@ class _CardapioState extends State<Cardapio> {
                     },
                     child: Text(
                       _listMenuController.isListOpen
-                          ? 'Fechar Cardápios Anteriores'
-                          : 'Visualizar Cardápios Anteriores',
+                          ? 'Visualizar Cardápios Anteriores'
+                          : 'Fechar Cardápios Anteriores',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -99,7 +99,7 @@ class _CardapioState extends State<Cardapio> {
                     height: 12,
                   ),
                   if (_listMenuController.isListOpen)
-                    _listMenuController.buildListView(),
+                    _listMenuController.build(context),
                 ],
               ),
             ),

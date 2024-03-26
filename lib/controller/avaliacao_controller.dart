@@ -51,7 +51,7 @@ class AvaliacaoController {
       });
 
       if (kDebugMode) {
-        print('Dados Salvas no Firestore');
+        print('Dados Salvos no Firestore');
       }
     } on FirebaseException catch (e) {
       if (kDebugMode) {

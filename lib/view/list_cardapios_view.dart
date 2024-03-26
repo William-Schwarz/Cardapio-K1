@@ -5,19 +5,28 @@ import 'package:k1_cardapio/model/cardapios_model.dart';
 import 'package:k1_cardapio/view/full_screen_image.dart';
 import 'package:k1_cardapio/view/review_cardapio_view.dart';
 
-class ListCardapios {
+class ListCardapios extends StatefulWidget {
+  const ListCardapios({super.key});
+
+  @override
+  ListCardapiosState createState() => ListCardapiosState();
+}
+
+class ListCardapiosState extends State<ListCardapios> {
   bool isListOpen = false;
 
   void toggleListVisibility() {
+    super.initState();
     isListOpen = !isListOpen;
   }
 
-  Widget buildListView() {
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder<List<Cardapios>>(
       future: CardapioController.getCardapios(),
       builder: (BuildContext context, AsyncSnapshot<List<Cardapios>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const LinearProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
