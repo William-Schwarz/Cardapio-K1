@@ -1,8 +1,8 @@
 class Cardapios {
   String id;
   String nome;
-  String dataInicial;
-  String dataFinal;
+  DateTime dataInicial;
+  DateTime dataFinal;
   String imagemURL;
   //String imagemBase64;
   DateTime data;

@@ -5,8 +5,8 @@ class AvaliacaoCardapio {
   final String comentario;
   final DateTime data;
   final String nomeCardapio;
-  final String dataInicialCardapio;
-  final String dataFinalCardapio;
+  final DateTime dataInicialCardapio;
+  final DateTime dataFinalCardapio;
   final String imagemURLCardapio;
   AvaliacaoCardapio({
     required this.id,

@@ -111,7 +111,7 @@ class ListCardapiosState extends State<ListCardapios> {
                                 ),
                               ),
                               trailing: Text(
-                                '${cardapio.dataInicial} até ${cardapio.dataFinal}',
+                                '${_formatDate(cardapio.dataInicial)} até ${_formatDate(cardapio.dataFinal)}',
                               ),
                             ),
                           ],
@@ -128,5 +128,9 @@ class ListCardapiosState extends State<ListCardapios> {
         }
       },
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
   }
 }

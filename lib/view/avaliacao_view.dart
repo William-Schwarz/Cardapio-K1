@@ -146,25 +146,51 @@ class _AvaliacaoState extends State<Avaliacao> {
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Row(
+                                          child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              const Icon(
-                                                Icons.chat_sharp,
-                                                color: Colors.white,
-                                                size: 20,
-                                              ),
-                                              const SizedBox(width: 4),
-                                              Expanded(
-                                                child: Text(
-                                                  '- ${avaliacao.comentario}',
-                                                  style: const TextStyle(
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const Icon(
+                                                    Icons.chat_sharp,
                                                     color: Colors.white,
-                                                    fontSize: 14,
-                                                    fontStyle: FontStyle.italic,
+                                                    size: 20,
                                                   ),
-                                                ),
+                                                  const SizedBox(width: 4),
+                                                  Expanded(
+                                                    child: Text(
+                                                      '- ${avaliacao.comentario}',
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14,
+                                                        fontStyle:
+                                                            FontStyle.italic,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 4,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.star,
+                                                    color: Colors.white,
+                                                    size: 18,
+                                                  ),
+                                                  Text(
+                                                    ' - ${avaliacao.nota.toString()}',
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),

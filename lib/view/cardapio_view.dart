@@ -13,7 +13,8 @@ class Cardapio extends StatefulWidget {
 
 class _CardapioState extends State<Cardapio> {
   late ListCardapiosState _listMenuController;
-  String? _imageUrl;
+  String? _imagemUrl;
+  DateTime? _dataFinal;
   bool _isLoading = true;
 
   @override
@@ -27,9 +28,14 @@ class _CardapioState extends State<Cardapio> {
     List<Cardapios> cardapios = await CardapioController.getCardapios();
     if (cardapios.isNotEmpty) {
       cardapios.sort((a, b) => b.data.compareTo(a.data));
+
       setState(() {
-        _imageUrl = cardapios.first.imagemURL;
+        _dataFinal = cardapios.first.dataFinal;
         _isLoading = false;
+        if (_dataFinal!.isAfter(DateTime.now()) ||
+            _dataFinal!.isAtSameMomentAs(DateTime.now())) {
+          _imagemUrl = cardapios.first.imagemURL;
+        }
       });
     } else {
       setState(() {
@@ -50,7 +56,7 @@ class _CardapioState extends State<Cardapio> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => FullScreenImage(
-                      imagePath: _imageUrl!,
+                      imagePath: _imagemUrl!,
                     ),
                   ),
                 );
@@ -62,10 +68,10 @@ class _CardapioState extends State<Cardapio> {
                   const SizedBox(
                     height: 16,
                   ),
-                  if (_isLoading) const CircularProgressIndicator(),
-                  if (!_isLoading && _imageUrl != null)
+                  if (_isLoading) const LinearProgressIndicator(),
+                  if (!_isLoading && _imagemUrl != null)
                     Image.network(
-                      _imageUrl!,
+                      _imagemUrl!,
                       width: 450,
                       height: 450,
                       fit: BoxFit.contain,

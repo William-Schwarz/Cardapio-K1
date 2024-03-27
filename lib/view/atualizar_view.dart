@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:k1_cardapio/controller/cardapio_controller.dart';
+import 'package:k1_cardapio/view/navigation.dart';
 
 class Atualizar extends StatefulWidget {
   const Atualizar({Key? key}) : super(key: key);
@@ -191,9 +192,18 @@ class _AtualizarState extends State<Atualizar> {
                                   if (_descricao.isNotEmpty) {
                                     await uploadController.postCardapios(
                                       nome: _descricao,
-                                      dataInicial: _formatDate(_startDate),
-                                      dataFinal: _formatDate(_endDate),
+                                      dataInicial: DateTime(_startDate.year,
+                                          _startDate.month, _startDate.day),
+                                      dataFinal: DateTime(_endDate.year,
+                                          _endDate.month, _endDate.day),
                                       uint8list: uploadController.imageData!,
+                                    );
+
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Navigation()), // Navegue para a tela "Cardápio"
                                     );
                                     ScaffoldMessenger.of(context)
                                         .clearSnackBars();

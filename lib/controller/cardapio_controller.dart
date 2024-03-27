@@ -26,8 +26,8 @@ class CardapioController extends ChangeNotifier {
 
   Future<void> postCardapios({
     required String nome,
-    required String dataInicial,
-    required String dataFinal,
+    required DateTime dataInicial,
+    required DateTime dataFinal,
     required Uint8List uint8list,
   }) async {
     if (_imageData != null) {
@@ -72,8 +72,8 @@ class CardapioController extends ChangeNotifier {
             Cardapios(
               id: doc.id,
               nome: data['Nome'],
-              dataInicial: data['DataInicial'],
-              dataFinal: data['DataFinal'],
+              dataInicial: (data['DataInicial'] as Timestamp).toDate(),
+              dataFinal: (data['DataFinal'] as Timestamp).toDate(),
               imagemURL: data['ImagemURL'],
               data: (data['Data'] as Timestamp).toDate(),
             ),

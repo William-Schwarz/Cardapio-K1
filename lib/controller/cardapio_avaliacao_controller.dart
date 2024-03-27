@@ -35,8 +35,10 @@ class CardapioAvaliacaoController {
             data: (avaliacaoData['Data'] as Timestamp).toDate(),
             // Incluindo os dados do cardápio
             nomeCardapio: cardapioData['Nome'],
-            dataInicialCardapio: cardapioData['DataInicial'],
-            dataFinalCardapio: cardapioData['DataFinal'],
+            dataInicialCardapio:
+                (cardapioData['DataInicial'] as Timestamp).toDate(),
+            dataFinalCardapio:
+                (cardapioData['DataFinal'] as Timestamp).toDate(),
             imagemURLCardapio: cardapioData['ImagemURL'],
           ),
         );
