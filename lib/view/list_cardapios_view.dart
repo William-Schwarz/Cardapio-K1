@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:k1_cardapio/controller/cardapio_controller.dart';
 import 'package:k1_cardapio/model/cardapios_model.dart';
 import 'package:k1_cardapio/view/full_screen_image.dart';
-import 'package:k1_cardapio/view/review_cardapio_view.dart';
+import 'package:k1_cardapio/view/avaliar_cardapio_view.dart';
 
 class ListCardapios extends StatefulWidget {
   const ListCardapios({super.key});
@@ -14,6 +14,7 @@ class ListCardapios extends StatefulWidget {
 
 class ListCardapiosState extends State<ListCardapios> {
   bool isListOpen = false;
+  int? openItemIndex;
 
   void toggleListVisibility() {
     super.initState();
@@ -66,7 +67,7 @@ class ListCardapiosState extends State<ListCardapios> {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return ReviewCardapioDialog(
+                                  return AvaliarCardapio(
                                     idCardapio: cardapio.id,
                                     nomeCardapio: cardapio.nome,
                                   );

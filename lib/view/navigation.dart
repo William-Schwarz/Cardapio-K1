@@ -9,7 +9,7 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
-  int _indiceAtual = 1;
+  int _indiceAtual = 0;
   final List<String> _titulos = ['Cardápio', 'Avaliações', 'Atualizar'];
   final List<Widget> _telas = [
     const NewPage(0),

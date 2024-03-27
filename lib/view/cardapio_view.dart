@@ -31,6 +31,10 @@ class _CardapioState extends State<Cardapio> {
         _imageUrl = cardapios.first.imagemURL;
         _isLoading = false;
       });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -65,6 +69,16 @@ class _CardapioState extends State<Cardapio> {
                       width: 450,
                       height: 450,
                       fit: BoxFit.contain,
+                    )
+                  else
+                    const Center(
+                      child: Text(
+                        'Nenhum cardápio disponível.',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 156, 16, 6),
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
                   const SizedBox(
                     height: 16,
@@ -87,8 +101,8 @@ class _CardapioState extends State<Cardapio> {
                     },
                     child: Text(
                       _listMenuController.isListOpen
-                          ? 'Visualizar Cardápios Anteriores'
-                          : 'Fechar Cardápios Anteriores',
+                          ? 'Fechar Cardápios Anteriores'
+                          : 'Visualizar Cardápios Anteriores',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,

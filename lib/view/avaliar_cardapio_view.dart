@@ -3,19 +3,19 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:k1_cardapio/controller/avaliacao_controller.dart';
 
-class ReviewCardapioDialog extends StatefulWidget {
+class AvaliarCardapio extends StatefulWidget {
   final String idCardapio;
   final String nomeCardapio;
 
-  const ReviewCardapioDialog(
+  const AvaliarCardapio(
       {Key? key, required this.nomeCardapio, required this.idCardapio})
       : super(key: key);
 
   @override
-  ReviewCardapioDialogState createState() => ReviewCardapioDialogState();
+  AvaliarCardapioState createState() => AvaliarCardapioState();
 }
 
-class ReviewCardapioDialogState extends State<ReviewCardapioDialog> {
+class AvaliarCardapioState extends State<AvaliarCardapio> {
   final AvaliacaoController avaliacaoController = AvaliacaoController();
   late int _rating = 1;
   late String _comment = '';
@@ -86,6 +86,7 @@ class ReviewCardapioDialogState extends State<ReviewCardapioDialog> {
               nota: _rating,
               comentario: _comment,
             );
+            ScaffoldMessenger.of(context).clearSnackBars();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: BackdropFilter(
@@ -99,7 +100,7 @@ class ReviewCardapioDialogState extends State<ReviewCardapioDialog> {
                     ),
                   ),
                 ),
-                duration: const Duration(seconds: 2),
+                duration: const Duration(seconds: 3),
               ),
             );
             Navigator.of(context).pop();

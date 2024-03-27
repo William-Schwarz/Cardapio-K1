@@ -33,7 +33,7 @@ class CardapioController extends ChangeNotifier {
     if (_imageData != null) {
       try {
         // Salva a imagem no Firebase Storage
-        String ref = 'imagens/img-${DateTime.now().toString()}.png';
+        String ref = 'cardapios/img-${DateTime.now().toString()}.png';
         await storage.ref(ref).putData(_imageData!);
         String imageUrl = await storage.ref(ref).getDownloadURL();
 
