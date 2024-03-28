@@ -120,6 +120,7 @@ class LoginViewState extends State<LoginView> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Image.asset('images/K1_logo_colorido.png'),
                   TextField(
                     controller: usuarioController,
                     decoration: const InputDecoration(
