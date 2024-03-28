@@ -31,6 +31,20 @@ class _NavigationState extends State<Navigation> {
             ),
           ),
         ),
+        /*
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        const Login()), // Substitua LoginScreen() pela sua tela de login
+              );
+            },
+            icon: const Icon(Icons.login),
+          ),
+        ],*/
       ),
       body: Center(
         child: _telas.elementAt(_indiceAtual),

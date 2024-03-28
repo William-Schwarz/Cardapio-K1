@@ -15,6 +15,7 @@ class ListCardapios extends StatefulWidget {
 class ListCardapiosState extends State<ListCardapios> {
   bool isListOpen = false;
   int? openItemIndex;
+  DateTime? _dataFinal;
 
   void toggleListVisibility() {
     super.initState();
@@ -35,7 +36,11 @@ class ListCardapiosState extends State<ListCardapios> {
           cardapios.sort((a, b) => b.data.compareTo(a.data));
           DateTime? imagemMaisRecente;
           if (cardapios.isNotEmpty) {
-            imagemMaisRecente = cardapios.first.data;
+            _dataFinal = cardapios.first.dataFinal;
+            if (_dataFinal!.isAfter(DateTime.now()) ||
+                _dataFinal!.isAtSameMomentAs(DateTime.now())) {
+              imagemMaisRecente = cardapios.first.data;
+            }
           }
           return ListView.builder(
             shrinkWrap: true,
