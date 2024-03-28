@@ -18,6 +18,9 @@ service cloud.firestore {
     match /Avaliacoes/{document=**} {
       allow read, write;
     }
+    match /Usuarios/{document=**} {
+      allow read, write;
+    }
   }
   
 }

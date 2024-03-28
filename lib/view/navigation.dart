@@ -1,5 +1,11 @@
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:k1_cardapio/controller/new_page.dart';
+import 'package:k1_cardapio/view/login_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({Key? key}) : super(key: key);
@@ -17,12 +23,27 @@ class _NavigationState extends State<Navigation> {
     const NewPage(2),
   ];
 
+  late User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUser();
+  }
+
+  Future<void> _getUser() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    _user = auth.currentUser;
+
+    if (_user == null) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 156, 16, 6),
-        title: Center(
+        flexibleSpace: Center(
           child: Text(
             _titulos[_indiceAtual],
             style: const TextStyle(
@@ -31,20 +52,54 @@ class _NavigationState extends State<Navigation> {
             ),
           ),
         ),
-        /*
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const Login()), // Substitua LoginScreen() pela sua tela de login
-              );
-            },
-            icon: const Icon(Icons.login),
+          Center(
+            child: Column(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    if (_user != null) {
+                      _signOut();
+                    } else {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const LoginView(),
+                          transitionsBuilder: (_, animation, __, child) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(0, 1),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  },
+                  icon: _user != null
+                      ? const Icon(Icons.logout)
+                      : const Icon(Icons.login),
+                  color: Colors.white,
+                ),
+                _user != null
+                    ? const Text('Sair',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                        ))
+                    : const Text(
+                        'Entrar',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                        ),
+                      )
+              ],
+            ),
           ),
-        ],*/
+        ],
       ),
       body: Center(
         child: _telas.elementAt(_indiceAtual),
@@ -73,8 +128,59 @@ class _NavigationState extends State<Navigation> {
   }
 
   void onItemTapped(int index) {
-    setState(() {
-      _indiceAtual = index;
-    });
+    if (_user != null || index != 2) {
+      setState(() {
+        _indiceAtual = index;
+      });
+    } else {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Você precisa estar logado para acessar esta funcionalidade.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+  void _signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      setState(() {
+        _user = null;
+      });
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.blue[700]?.withOpacity(0.9),
+          content: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Logout realizado com sucesso!',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao fazer logout: $e');
+      }
+    }
   }
 }

@@ -198,7 +198,6 @@ class _AtualizarState extends State<Atualizar> {
                                           _endDate.month, _endDate.day),
                                       uint8list: uploadController.imageData!,
                                     );
-
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
